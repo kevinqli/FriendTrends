@@ -28,7 +28,7 @@ function strip_punctuation(text) {
     return text.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~\?()]/g," "); 
 }
 function generate_wordlist(statuses) {
-    var common_words = ["am", "aint","part", "are", "arent", "is", "isnt", "was", "wasnt", "were", "werent", "be", "been", "do", "dont", "does", "doesnt", "did", "didnt", "done", "have", "havent", "has", "hasnt", "had", "will", "wont", "would", "wouldnt", "shall", "should", "shouldnt", "can", "cant", "could", "couldnt", "must", "mustnt","may","might",    "i", "im", "ive", "my", "me", "mine", "myself", "you", "youre", "youve", "your", "yours", "yourself", "he", "hes", "his", "him", "himself",  "she", "shes", "her", "hers", "herself", "it", "its", "itself", "we", "weve", "us", "ours", "ourself", "they", "theyre", "theyve", "their", "them", "themself",    "this", "that", "thats", "these", "those","which","whose","whom","why","how","who","there","when","where","here",    "totally","all","now","then","other","another","many","much","more","most","any","none","never","something","somethings","anything","anythings","nothing","nothings","while","same",    "com","www","http","https",    "the","a","an",    "and","but","though","or","as","if","so","also","because","thus","since","no","not","too",    "of","in","to","for","with","on","during","at","from","by","about","up","down","out","inside","outside","into","back","through","after","before","over","between",    "say","says","said","says",    "go","went","gone","goes",    "get","got","gets",    "know","knew","known","knows",    "think","thought","thinks",    "see","saw","seen","sees","seem",    "take","took","taken","takes",    "come","came","comes",    "like","liked","likes",    "want","wanted","wants", "look","looked","looks", "use","used","uses",    "find","found","finds",    "give","gave","given","gives",    "tell","told","tells",    "call","called","calls",    "try","tries","tried",    "ask","asks","asked",    "need","needs","needed",    "feel","feels","felt",    "become","becomes","became",    "leave","leaves","left",    "mean","means",    "put","puts",    "let","lets",    "person","people",    "just",    "way",    "new",    "thing","things",    "well","very","even","back","good",    "still",    "last",    "next",    "really",    "great",    "again"];
+    var common_words = ["am", "aint","part", "are", "arent", "is", "isnt", "was", "wasnt", "were", "werent", "be", "been", "do", "dont", "does", "doesnt", "did", "didnt", "done", "have", "havent", "has", "hasnt", "had", "will", "wont", "would", "wouldnt", "shall", "should", "shouldnt", "can", "cant", "could", "couldnt", "must", "mustnt","may","might",    "i", "im", "ive", "my", "me", "mine", "myself", "you", "youre", "youve", "your", "yours", "yourself", "he", "hes", "his", "him", "himself",  "she", "shes", "her", "hers", "herself", "it", "its", "itself", "we", "weve", "us", "our", "ours", "ourself", "they", "theyre", "theyve", "their", "them", "themself",    "this", "that", "thats", "these", "those","which","whose","whom","why","how","who","there","when","where","here",    "totally","all","now","then","other","another","many","much","more","most","any","none","never","something","somethings","anything","anythings","nothing","nothings","while","same",    "com","www","http","https",    "the","a","an",    "and","but","though","or","as","if","so","also","because","thus","since","no","not","too",    "of","in","to","for","with","on","during","at","from","by","about","up","down","out","inside","outside","into","back","through","after","before","over","between",    "say","says","said","says",    "go","went","gone","goes",    "get","got","gets",    "know","knew","known","knows",    "think","thought","thinks",    "see","saw","seen","sees","seem",    "take","took","taken","takes",    "come","came","comes",    "like","liked","likes",    "want","wanted","wants", "look","looked","looks", "use","used","uses",    "find","found","finds",    "give","gave","given","gives",    "tell","told","tells",    "call","called","calls",    "try","tries","tried",    "ask","asks","asked",    "need","needs","needed",    "feel","feels","felt",    "become","becomes","became",    "leave","leaves","left",    "mean","means",    "put","puts",    "let","lets",    "person","people",    "just",    "way",    "new",    "thing","things",    "well","very","even","back","good",    "still",    "last",    "next",    "really",    "great",    "again"];
     var words = {};
     var words_a = [];
     for (var msg in statuses) {
@@ -55,13 +55,12 @@ function generate_wordlist(statuses) {
     return words_a;
 }
 function show_category(category) {
-    $('._5jmm._5pat._5uch').hide();
     $('.mbs._5pbx.userContent').each(function() {
-        text = $(this).html();
-        text = strip_html(text);
-        text = strip_punctuation(text);
-        text = text.toLowerCase();
-        text = text.split(/\s+/g);
+        text = $(this).html().toLowerCase();
+     //   text = strip_html(text);
+     //   text = strip_punctuation(text);
+     //   text = text.toLowerCase();
+     //   text = text.split(/\s+/g);
         if (text.indexOf(category) != -1) {
             $(this).parents('._5jmm._5pat._5uch').show();
         }
@@ -69,7 +68,33 @@ function show_category(category) {
 }
 function main() {
 	loadMore(10, function() {
-		var messages = $(".mbs._5pbx.userContent");
+        $('head').append('<style>._5jmm{display: none;}</style>');
+		$('_5jmm._5pat._5uch').show();
+        $('body').append($('<script type="text/javscript"></script>').html('requireLazy(["LitestandStreamUnloader","LitestandStreamLoader"],function(LitestandStreamUnloader,LitestandStreamLoader) {'+ 
+'		    try {'+
+'		        // This will prevent old stories from being removed by their Unloader'+
+'				// It will throw an Exception after over-writing the config, which is just fine'+
+'			    LitestandStreamUnloader.register(null,{'+
+'			        oldStoriesLimit:9999'+
+'			    });'+
+'			} catch(e) { }'+
+'		    var totalClicks = 0;'+
+'		    var _attachNewPager = LitestandStreamLoader.attachNewPager;'+
+'		    LitestandStreamLoader.attachNewPager = function(gb) { '+
+'		        if (totalClicks++<5) {'+
+'		            _attachNewPager(gb);'+
+'				}'+
+'				else {'+
+'    				totalClicks = 0;'+
+'					click(gb.querySelector("a"),function(a) {'+
+'	    			    _attachNewPager(gb);'+
+'	                },true,true);'+
+'			        var msg = document.createElement("div");'+
+'		            gb.appendChild(msg);'+
+'				}'+
+'			}'+
+'		});'));	
+        var messages = $(".mbs._5pbx.userContent");
         var containers = messages.parents("._5jmm._5pat._5uch");
         var plain_messages = []
         messages.each(function() {
@@ -81,11 +106,22 @@ function main() {
         });
 		console.log(messages.length);
         words = generate_wordlist(plain_messages);
-        console.log(words);
         $('.mbm.pbs').first().before("<div class='uiHeader uiHeaderTopBorder mbm pbs uiSideHeader'>"+
             "<div class='clearfix uiHeaderTop localhead'>"+
-            "<div><h6 class='uiHeaderTitle'>Trending Locally</h6></div></div>");
+            "<div><h6 class='uiHeaderTitle'>Trending among Friends</h6></div></div>");
         $('.mbm.pbs').first().after("<div class='_5my7'><ul class='_5my7'></ul></div>");
+        $('ul._5my7').append('<input type="text" class="search-trends" />'); 
+        $('.search-trends').keyup(function() {
+            $('._5jmm._5pat._5uch').hide();
+            var text = strip_punctuation($(this).val());
+            console.log(text);
+            text = text.toLowerCase();
+            text = text.split(/\s+/g);
+            console.log(text);
+            for (var i in text) {
+                show_category(text[i]);   
+            }
+        });
         for (var i in words) {
             $('ul._5my7').first().append("<li class='_5uhn _5my2 shibboleth' data-word='"+words[i][0]+"'><a class='_5cl5 _5v0t' href='#'></a><div class='clearfix _5v0u'>"+
                 "<img class='_5r-z _8o lfloat img' alt='' src='https://fbstatic-a.akamaihd.net/rsrc.php/v2/y4/r/-PAXP-deijE.gif'>"+
@@ -102,8 +138,10 @@ function main() {
         });
         $('.shibboleth').click(function(){
             console.log("this:", $(this).attr('data-word'));
+            $('._5jmm._5pat._5uch').hide();
             show_category($(this).attr('data-word'));
         });
+        $('body').append('<script type="text/javascript">XMLHttpRequest = {};</script>');
     });
 }
 
