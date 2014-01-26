@@ -56,7 +56,7 @@ function generate_wordlist(statuses) {
 }
 function show_category(category) {
     $('._5jmm._5pat._5uch').hide();
-    $('.mbs._5pbx.userContent').each(function() {
+    $('.mbs._5pbx.userContent.').each(function() {
         text = $(this).html();
         text = strip_html(text);
         text = strip_punctuation(text);
@@ -67,10 +67,12 @@ function show_category(category) {
         }
     });
 }
+var categorized_stories = {};
+var containers;
 function main() {
 	loadMore(10, function() {
 		var messages = $(".mbs._5pbx.userContent");
-        var containers = messages.parents("._5jmm._5pat._5uch");
+        containers = messages.parents("._5jmm._5pat._5uch");
         var plain_messages = []
         messages.each(function() {
             var text = $(this).html();
@@ -81,10 +83,26 @@ function main() {
         });
 		console.log(messages.length);
         words = generate_wordlist(plain_messages);
+        for (var j in words) {
+            categorized_stories[words[j][0]] = $('#THISSELECTORISEMPTY');
+        }
         console.log(words);
-        $('ul.uiSideNav').first(0).append("<h4 class='navHeader'>TRENDING</h4>");
-        for (var i in words) {
-            $('ul.uiSideNav').first().append("<li class='sideNavItem stat_elem shibboleth'>"+words[i][0]+"</li>");
+        for (var i=0; i<containers.length; ++i) {
+            var a = plain_messages[i].split(/\s+/g);
+            for (var j in words) {
+                if (a.indexOf(words[j][0]) != -1) {
+                    console.log(words[j][0]);
+                    console.log(categorized_stories[words[j][0]]);
+                    console.log(a);
+                    categorized_stories[words[j][0]] = categorized_stories[words[j][0]].add(containers[i]);  
+                }
+            }
+            //console.log(categorized_stories);
+            //console.log(containers);
+        }
+        console.log(categorized_stories);
+        for (key in categorized_stories) {
+            $('ul.uiSideNav').first().append("<li class='sideNavItem stat_elem shibboleth'>"+key+"</li>");
         }
         $('.shibboleth').click(function(){
             console.log("this:", this.innerHTML);
